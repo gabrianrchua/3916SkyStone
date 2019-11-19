@@ -1,9 +1,5 @@
 /*
-Apex Robotics FTC Team 3916: Tank Drive Template
-Created with Android Studio v3.3.1, Gradle v4.10.1
-Template created by Gabrian Chua (2019)
-
-This TeleOp class defines a template for a basic Two Motor Tank Drive setup.
+Apex Robotics FTC Team 3916: Main TeleOp for SkyStone season (2019-2020).
  */
 
 package org.firstinspires.ftc.teamcode;
