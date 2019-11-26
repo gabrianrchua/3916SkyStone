@@ -1,5 +1,7 @@
 /*
-Apex Robotics FTC Team 3916: Main TeleOp for SkyStone season (2019-2020).
+Apex Robotics FTC Team 3916: Main TeleOp for SkyStone season (2019-2020)
+
+Uses a Mechanum-style drivetrain for movement.
  */
 
 package org.firstinspires.ftc.teamcode;
