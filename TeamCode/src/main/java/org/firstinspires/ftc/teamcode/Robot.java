@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
+ * -- TEAM 3916 --
  * Robot class for easier component control across multiple omni_drive mode classes
  * Robot functionality handled here for consistency and avoiding bugs and simplicity in driver classes
  * NOTICE: all dimensions are measured in meters (in case not specified). all measurements should be taken in meters or else calculations will absolutely mess up
