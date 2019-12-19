@@ -11,11 +11,11 @@ public class MechPower {
         rightBack = rb;
         rightFront = rf;
     }
-    public MechPower interpolate(MechPower mp, double interpolationValue) {
-        double lf = lerp(leftFront, mp.leftFront, interpolationValue);
-        double lb = lerp(leftBack, mp.leftBack, interpolationValue);
-        double rf = lerp(rightFront, mp.rightFront, interpolationValue);
-        double rb = lerp(rightBack, mp.rightBack, interpolationValue);
+    public MechPower interpolate(MechPower mp, double interpolationValue, double scaleValue) {
+        double lf = lerp(leftFront, mp.leftFront, interpolationValue) * scaleValue;
+        double lb = lerp(leftBack, mp.leftBack, interpolationValue) * scaleValue;
+        double rf = lerp(rightFront, mp.rightFront, interpolationValue) * scaleValue;
+        double rb = lerp(rightBack, mp.rightBack, interpolationValue) * scaleValue;
         return new MechPower(lf, lb, rf, rb);
     }
     public double lerp(double a, double b, double f)

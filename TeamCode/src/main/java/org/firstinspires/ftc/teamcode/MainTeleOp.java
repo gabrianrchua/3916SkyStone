@@ -23,17 +23,20 @@ public class MainTeleOp extends OpMode {
     @Override
     public void loop() {
         final double STICK_DEAD_ZONE = 0.1;
-        double MOTOR_POWER = 1;
 
         double x = 0;
         double y = 0;
+        double rx = 0;
         if (Math.abs(gamepad1.left_stick_y) > STICK_DEAD_ZONE) {
             y = gamepad1.left_stick_y;
         }
         if (Math.abs(gamepad1.left_stick_x) > STICK_DEAD_ZONE) {
             x = gamepad1.left_stick_x;
         }
-        MechPower pwr = bot.mech_drive(x, y);
+        if (Math.abs(gamepad1.right_stick_x) > STICK_DEAD_ZONE) {
+            rx = gamepad1.right_stick_x;
+        }
+        MechPower pwr = bot.mech_drive(x, y, rx);
         telemetry.addData("Powers", "x:" + x + " y:" + y + " =pwr:" + pwr.toString());
         telemetry.update();
     }

@@ -12,6 +12,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,10 @@ public class Robot {
 
     // cached HardwareMap in case needed for future
     private HardwareMap hw;
+
+    // auxiliary motors and servos
+    private DcMotor aux_motor_1;
+    private Servo aux_servo_1;
 
     /*
      * any arbitrary constants required for certain calculations
@@ -129,6 +134,17 @@ public class Robot {
                 mech_rightBack = hw.get(DcMotor.class, "right back");
                 mech_rightFront = hw.get(DcMotor.class, "right front");
 
+                try {
+                    aux_motor_1 = hw.get(DcMotor.class, "aux motor 1");
+                } catch (Exception ex) {
+                    // no aux motor 1
+                }
+                try {
+                    aux_servo_1 = hw.get(Servo.class, "aux servo 1");
+                } catch (Exception ex) {
+                    // no aux servo 1
+                }
+
                 // reverse the right motors
                 mech_rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
                 mech_rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -151,30 +167,55 @@ public class Robot {
      * @param stickX - stick value in the x direction
      * @param stickY - stick value in the y direction
      */
-    public MechPower mech_drive(double stickX, double stickY) {
+    public MechPower mech_drive(double stickX, double stickY, double rightStickX) {
         double finalPowerMultiplier = Math.sqrt(Math.pow(stickX, 2) + Math.pow(stickY, 2));
         double interpolationValue = Math.atan(stickY / stickX) / (Math.PI / 2);
         MechPower finalPwr;
+        MechPower rotatePwr;
+        MechPower ultraPwr;
         if (stickX >= 0 && stickY >= 0) {
             //northeast
-            finalPwr = FORWARD.interpolate(RIGHT, interpolationValue);
+            finalPwr = FORWARD.interpolate(RIGHT, interpolationValue, finalPowerMultiplier);
         } else if (stickX >= 0 && stickY < 0) {
             //southeast
-            finalPwr = BACKWARD.interpolate(RIGHT, interpolationValue);
+            finalPwr = BACKWARD.interpolate(RIGHT, interpolationValue, finalPowerMultiplier);
         } else if (stickX < 0 && stickY >= 0) {
             //northwest
-            finalPwr = FORWARD.interpolate(LEFT, interpolationValue);
+            finalPwr = FORWARD.interpolate(LEFT, interpolationValue, finalPowerMultiplier);
         } else if (stickX < 0 && stickY < 0) {
             //southwest
-            finalPwr = BACKWARD.interpolate(LEFT, interpolationValue);
+            finalPwr = BACKWARD.interpolate(LEFT, interpolationValue, finalPowerMultiplier);
         } else {
             finalPwr = new MechPower(0,0,0,0);
         }
-        mech_leftBack.setPower(finalPwr.leftBack);
-        mech_leftFront.setPower(finalPwr.leftFront);
-        mech_rightBack.setPower(finalPwr.rightBack);
-        mech_rightFront.setPower(finalPwr.rightFront);
-        return finalPwr;
+        if (rightStickX > 0) {
+            rotatePwr = COUNTERCLOCKWISE.interpolate(new MechPower(0,0,0,0), Math.abs(rightStickX), 1);
+        } else if (rightStickX < 0) {
+            rotatePwr = CLOCKWISE.interpolate(new MechPower(0,0,0,0), Math.abs(rightStickX), 1);
+        } else {
+            mech_leftBack.setPower(finalPwr.leftBack);
+            mech_leftFront.setPower(finalPwr.leftFront);
+            mech_rightBack.setPower(finalPwr.rightBack);
+            mech_rightFront.setPower(finalPwr.rightFront);
+            return finalPwr;
+        }
+        ultraPwr = finalPwr.interpolate(rotatePwr, 0.5, 1);
+        mech_leftBack.setPower(ultraPwr.leftBack);
+        mech_leftFront.setPower(ultraPwr.leftFront);
+        mech_rightBack.setPower(ultraPwr.rightBack);
+        mech_rightFront.setPower(ultraPwr.rightFront);
+        return ultraPwr;
+    }
+
+    public void aux_lift(double power) {
+        if (aux_motor_1 != null) {
+            aux_motor_1.setPower(power);
+        }
+    }
+    public void aux_claw(double power) {
+        if (aux_servo_1 != null) {
+            aux_servo_1.setPosition(power);
+        }
     }
 
     public void omni_setDirection(String direction) {
