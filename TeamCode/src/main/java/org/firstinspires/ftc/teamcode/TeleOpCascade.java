@@ -26,21 +26,27 @@ public class TeleOpCascade extends OpMode {
 
         double x = 0;
         double y = 0;
-        double rx = 0;
-        if (Math.abs(gamepad1.left_stick_y) > STICK_DEAD_ZONE) {
-            y = gamepad1.left_stick_y;
-        }
-        if (Math.abs(gamepad1.left_stick_x) > STICK_DEAD_ZONE) {
-            x = gamepad1.left_stick_x;
-        }
-        if (Math.abs(gamepad1.right_stick_x) > STICK_DEAD_ZONE) {
-            rx = gamepad1.right_stick_x;
+        if (gamepad1.dpad_left) {
+            bot.mech_rotate(1);
+            telemetry.addData("Status", "Rotating Counterclockwise");
+            telemetry.update();
+        } else if (gamepad1.dpad_right) {
+            bot.mech_rotate(0);
+            telemetry.addData("Status", "Rotating Clockwise");
+            telemetry.update();
+        } else {
+            if (Math.abs(gamepad1.left_stick_y) > STICK_DEAD_ZONE) {
+                y = gamepad1.left_stick_y;
+            }
+            if (Math.abs(gamepad1.left_stick_x) > STICK_DEAD_ZONE) {
+                x = gamepad1.left_stick_x;
+            }
+            MechPower pwr = bot.mech_drive(x, y);
+            telemetry.addData("Powers", "x:" + x + " y:" + y + " =pwr:" + pwr.toString());
+            telemetry.update();
         }
         if (Math.abs(gamepad2.left_stick_y) > STICK_DEAD_ZONE) {
             bot.aux_lift(gamepad2.left_stick_y);
         }
-        MechPower pwr = bot.mech_drive(x, y, rx);
-        telemetry.addData("Powers", "x:" + x + " y:" + y + " =pwr:" + pwr.toString());
-        telemetry.update();
     }
 }
