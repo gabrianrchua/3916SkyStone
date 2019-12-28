@@ -167,7 +167,7 @@ public class Robot {
      * @param stickX - stick value in the x direction
      * @param stickY - stick value in the y direction
      */
-    public MechPower mech_drive(double stickX, double stickY, double rightStickX) {
+    public MechPower mech_drive(double stickX, double stickY) {
         double finalPowerMultiplier = Math.sqrt(Math.pow(stickX, 2) + Math.pow(stickY, 2));
         double interpolationValue = Math.atan(stickY / stickX) / (Math.PI / 2);
         MechPower finalPwr;
@@ -188,23 +188,27 @@ public class Robot {
         } else {
             finalPwr = new MechPower(0,0,0,0);
         }
-        if (rightStickX > 0) {
-            rotatePwr = COUNTERCLOCKWISE.interpolate(new MechPower(0,0,0,0), Math.abs(rightStickX), 1);
-        } else if (rightStickX < 0) {
-            rotatePwr = CLOCKWISE.interpolate(new MechPower(0,0,0,0), Math.abs(rightStickX), 1);
+        mech_leftBack.setPower(finalPwr.leftBack);
+        mech_leftFront.setPower(finalPwr.leftFront);
+        mech_rightBack.setPower(finalPwr.rightBack);
+        mech_rightFront.setPower(finalPwr.rightFront);
+        return finalPwr;
+    }
+
+    public void mech_rotate(int direction) {
+        if (direction == 0) {
+            //clockwise
+            mech_leftBack.setPower(CLOCKWISE.leftBack);
+            mech_leftFront.setPower(CLOCKWISE.leftFront);
+            mech_rightBack.setPower(CLOCKWISE.rightBack);
+            mech_rightFront.setPower(CLOCKWISE.rightFront);
         } else {
-            mech_leftBack.setPower(finalPwr.leftBack);
-            mech_leftFront.setPower(finalPwr.leftFront);
-            mech_rightBack.setPower(finalPwr.rightBack);
-            mech_rightFront.setPower(finalPwr.rightFront);
-            return finalPwr;
+            //counterclockwise
+            mech_leftBack.setPower(COUNTERCLOCKWISE.leftBack);
+            mech_leftFront.setPower(COUNTERCLOCKWISE.leftFront);
+            mech_rightBack.setPower(COUNTERCLOCKWISE.rightBack);
+            mech_rightFront.setPower(COUNTERCLOCKWISE.rightFront);
         }
-        ultraPwr = finalPwr.interpolate(rotatePwr, 0.5, 1);
-        mech_leftBack.setPower(ultraPwr.leftBack);
-        mech_leftFront.setPower(ultraPwr.leftFront);
-        mech_rightBack.setPower(ultraPwr.rightBack);
-        mech_rightFront.setPower(ultraPwr.rightFront);
-        return ultraPwr;
     }
 
     public void aux_lift(double power) {
