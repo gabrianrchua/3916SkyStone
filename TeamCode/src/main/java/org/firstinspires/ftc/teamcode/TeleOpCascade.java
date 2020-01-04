@@ -42,7 +42,7 @@ public class TeleOpCascade extends OpMode {
                 x = gamepad1.left_stick_x;
             }
             MechPower pwr = bot.mech_drive(x, y);
-            telemetry.addData("Powers", "x:" + x + " y:" + y + " =pwr:" + pwr.toString());
+            telemetry.addData("Status", "power: x:" + x + " y:" + y + " =pwr:" + pwr.toString());
             telemetry.update();
         }
         if (Math.abs(gamepad2.left_stick_y) > STICK_DEAD_ZONE) {

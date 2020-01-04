@@ -58,6 +58,7 @@ public class Robot {
     // auxiliary motors and servos
     private DcMotor aux_motor_1;
     private Servo aux_servo_1;
+    private Servo aux_servo_2;
 
     /*
      * any arbitrary constants required for certain calculations
@@ -216,9 +217,16 @@ public class Robot {
             aux_motor_1.setPower(power);
         }
     }
+
     public void aux_claw(double power) {
         if (aux_servo_1 != null) {
             aux_servo_1.setPosition(power);
+        }
+    }
+
+    public void aux_claw2(double power) {
+        if (aux_servo_2 != null) {
+            aux_servo_2.setPosition(power);
         }
     }
 
