@@ -9,7 +9,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="Blinear Slide Boi", group="Apex Robotics 3916")
+@TeleOp(name="Linear Slide", group="Apex Robotics 3916")
 //@Disabled
 public class LinearSlideTeleOp extends OpMode {
 
@@ -26,12 +26,13 @@ public class LinearSlideTeleOp extends OpMode {
 
         double x = 0;
         double y = 0;
+        //John Switched the values of bot.mech_rotate(int)
         if (gamepad1.left_bumper) {
-            bot.mech_rotate(1);
+            bot.mech_rotate(0);
             telemetry.addData("Status", "Rotating Counterclockwise");
             telemetry.update();
         } else if (gamepad1.right_bumper) {
-            bot.mech_rotate(0);
+            bot.mech_rotate(1);
             telemetry.addData("Status", "Rotating Clockwise");
             telemetry.update();
         } else {
@@ -42,14 +43,36 @@ public class LinearSlideTeleOp extends OpMode {
                 x = gamepad1.left_stick_x;
             }
             MechPower pwr = bot.mech_drive(x, y);
-            telemetry.addData("Status", "power: x:" + x + " y:" + y + " =pwr:" + pwr.toString());
-            telemetry.update();
+            //telemetry.addData("Status", "power: x:" + x + " y:" + y + " =pwr:" + pwr.toString());
+            //telemetry.update();
         }
+        String message = "Wack nothing's happening...";
+        //stage 1 lift
         if (Math.abs(gamepad2.left_stick_y) > STICK_DEAD_ZONE) {
             bot.aux_claw(gamepad2.left_stick_y);
+            message = "STAGE 1 LIFTING POWER " + gamepad2.left_stick_y;
+        } else {
+            bot.aux_claw(0);
         }
+        //stage 2 lift
+        if (gamepad2.dpad_up) {
+            bot.aux_claw2(1);
+            message = "STAGE 2 LIFT POWER 1";
+        } else if (gamepad2.dpad_down) {
+            bot.aux_claw2(-1);
+            message = "STAGE 2 LIFT POWER -1";
+        } else {
+            bot.aux_claw2(0);
+        }
+        telemetry.addData("Status", message);
+        //claw
         if (Math.abs(gamepad2.right_stick_y) > STICK_DEAD_ZONE) {
-            bot.aux_claw2(gamepad2.right_stick_y);
+            bot.aux_claw3(gamepad2.right_stick_y);
+            message = "CLAW LIFT POWER " + gamepad2.right_stick_y;
+        } else {
+            bot.aux_claw3(0);
+            message = "CLAW LIFT POWER 0";
         }
+        telemetry.addData("Status", message);
     }
 }

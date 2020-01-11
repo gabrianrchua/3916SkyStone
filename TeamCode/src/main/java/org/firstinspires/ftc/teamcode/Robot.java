@@ -9,6 +9,7 @@ Most classes will create a Robot object from this class for behavior.
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -57,8 +58,10 @@ public class Robot {
 
     // auxiliary motors and servos
     private DcMotor aux_motor_1;
-    private Servo aux_servo_1;
-    private Servo aux_servo_2;
+    private CRServo aux_servo_1;
+    private CRServo aux_servo_2;
+    private Servo aux_servo_3;
+    private double servo3pos;
 
     /*
      * any arbitrary constants required for certain calculations
@@ -141,9 +144,19 @@ public class Robot {
                     // no aux motor 1
                 }
                 try {
-                    aux_servo_1 = hw.get(Servo.class, "aux servo 1");
+                    aux_servo_1 = hw.get(CRServo.class, "aux servo 1");
                 } catch (Exception ex) {
                     // no aux servo 1
+                }
+                try {
+                    aux_servo_2 = hw.get(CRServo.class, "aux servo 2");
+                } catch (Exception ex) {
+                    // no aux servo 2
+                }
+                try {
+                    aux_servo_3 = hw.get(Servo.class, "aux servo 3");
+                } catch (Exception ex) {
+                    // no aux servo 3
                 }
 
                 // reverse the right motors
@@ -161,6 +174,12 @@ public class Robot {
                 // this code should never be called
                 throw new RuntimeException();
         }
+    }
+    public void stopDriving() {
+        mech_leftBack.setPower(0);
+        mech_leftFront.setPower(0);
+        mech_rightBack.setPower(0);
+        mech_rightFront.setPower(0);
     }
 
     /**
@@ -220,13 +239,19 @@ public class Robot {
 
     public void aux_claw(double power) {
         if (aux_servo_1 != null) {
-            aux_servo_1.setPosition(power);
+            aux_servo_1.setPower(power);
         }
     }
 
     public void aux_claw2(double power) {
         if (aux_servo_2 != null) {
-            aux_servo_2.setPosition(power);
+            aux_servo_2.setPower(power);
+        }
+    }
+    public void aux_claw3(double power) {
+        if (aux_servo_3 != null) {
+            servo3pos += power;
+            aux_servo_3.setPosition(servo3pos);
         }
     }
 
