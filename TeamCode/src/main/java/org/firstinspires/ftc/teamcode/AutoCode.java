@@ -61,7 +61,7 @@ public class AutoCode extends OpMode {
             default:
                 //pause for a bit
                 new Thread(new Tasker("pause,1000"));
-                state+=2;
+                //state++;
                 break;
         }
 

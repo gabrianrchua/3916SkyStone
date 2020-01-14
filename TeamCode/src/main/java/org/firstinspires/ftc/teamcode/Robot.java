@@ -153,11 +153,12 @@ public class Robot {
                 } catch (Exception ex) {
                     // no aux servo 2
                 }
-                try {
+                /*try {
                     aux_servo_3 = hw.get(Servo.class, "aux servo 3");
                 } catch (Exception ex) {
                     // no aux servo 3
-                }
+                }*/
+                aux_servo_3 = hw.get(Servo.class, "aux servo 3");
 
                 // reverse the right motors
                 mech_rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
