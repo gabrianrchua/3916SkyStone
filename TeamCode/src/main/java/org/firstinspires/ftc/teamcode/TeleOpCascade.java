@@ -27,11 +27,11 @@ public class TeleOpCascade extends OpMode {
         double x = 0;
         double y = 0;
         if (gamepad1.left_bumper) {
-            bot.mech_rotate(1);
+            bot.mech_rotate(0);
             telemetry.addData("Status", "Rotating Counterclockwise");
             telemetry.update();
         } else if (gamepad1.right_bumper) {
-            bot.mech_rotate(0);
+            bot.mech_rotate(1);
             telemetry.addData("Status", "Rotating Clockwise");
             telemetry.update();
         } else {

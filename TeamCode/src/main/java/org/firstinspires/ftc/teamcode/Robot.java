@@ -192,8 +192,6 @@ public class Robot {
         double finalPowerMultiplier = Math.sqrt(Math.pow(stickX, 2) + Math.pow(stickY, 2));
         double interpolationValue = Math.atan(stickY / stickX) / (Math.PI / 2);
         MechPower finalPwr;
-        MechPower rotatePwr;
-        MechPower ultraPwr;
         if (stickX >= 0 && stickY >= 0) {
             //northeast
             finalPwr = FORWARD.interpolate(RIGHT, interpolationValue, finalPowerMultiplier);
