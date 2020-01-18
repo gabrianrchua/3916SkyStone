@@ -4,14 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.List;
-
-@Autonomous(name = "Test Autonomous", group = "Apex Robotics 3916")
-public class AutoCode extends OpMode {
+@Autonomous(name = "Red Right Autonomous", group = "Apex Robotics 3916")
+public class RedRightAuto extends OpMode {
     private Robot bot = new Robot();
     private ElapsedTime runtime = new ElapsedTime();
     private String timeOfCompletion;
@@ -40,18 +34,18 @@ public class AutoCode extends OpMode {
             // even numbers for performing an action while odd values for state are used for waiting, seen in default case
             case 0:
                 // drive forward
-                new Thread(new Tasker("drive,0,1,3000")).start();
+                new Thread(new Tasker("drive,0,0.5,2000")).start();
                 state++;
 
                 break;
             case 2:
-                //turn for a bit
-                new Thread(new Tasker("turn,0,1000"));
+                // strafe right
+                new Thread(new Tasker("drive,0.5,0,3000")).start();
                 state++;
                 break;
             case 4:
-                //go forward but sideways
-                new Thread(new Tasker("drive,0,1,3000"));
+                // drive forward
+                new Thread(new Tasker("drive,0,0.5,1000")).start();
                 state++;
                 break;
             case 6:

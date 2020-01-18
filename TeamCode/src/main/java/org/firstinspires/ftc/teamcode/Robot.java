@@ -215,18 +215,19 @@ public class Robot {
     }
 
     public void mech_rotate(int direction) {
+        double turnPower = 0.5;
         if (direction == 0) {
             //clockwise
-            mech_leftBack.setPower(CLOCKWISE.leftBack);
-            mech_leftFront.setPower(CLOCKWISE.leftFront);
-            mech_rightBack.setPower(CLOCKWISE.rightBack);
-            mech_rightFront.setPower(CLOCKWISE.rightFront);
+            mech_leftBack.setPower(CLOCKWISE.leftBack * turnPower);
+            mech_leftFront.setPower(CLOCKWISE.leftFront * turnPower);
+            mech_rightBack.setPower(CLOCKWISE.rightBack * turnPower);
+            mech_rightFront.setPower(CLOCKWISE.rightFront * turnPower);
         } else {
             //counterclockwise
-            mech_leftBack.setPower(COUNTERCLOCKWISE.leftBack);
-            mech_leftFront.setPower(COUNTERCLOCKWISE.leftFront);
-            mech_rightBack.setPower(COUNTERCLOCKWISE.rightBack);
-            mech_rightFront.setPower(COUNTERCLOCKWISE.rightFront);
+            mech_leftBack.setPower(COUNTERCLOCKWISE.leftBack * turnPower);
+            mech_leftFront.setPower(COUNTERCLOCKWISE.leftFront * turnPower);
+            mech_rightBack.setPower(COUNTERCLOCKWISE.rightBack * turnPower);
+            mech_rightFront.setPower(COUNTERCLOCKWISE.rightFront * turnPower);
         }
     }
 
@@ -250,7 +251,17 @@ public class Robot {
     public void aux_claw3(double power) {
         if (aux_servo_3 != null) {
             servo3pos += power;
+            servo3pos = Clamp(servo3pos, 0, 1);
             aux_servo_3.setPosition(servo3pos);
+        }
+    }
+    private double Clamp(double i, double min, double max) {
+        if (i < min) {
+            return min;
+        } else if (i > max) {
+            return max;
+        } else {
+            return i;
         }
     }
 
