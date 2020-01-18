@@ -34,21 +34,31 @@ public class BlueLeftAuto extends OpMode {
             // even numbers for performing an action while odd values for state are used for waiting, seen in default case
             case 0:
                 // drive forward
-                new Thread(new Tasker("drive,0,0.5,2000")).start();
+                new Thread(new Tasker("drive,0,0.5,1500")).start();
                 state++;
 
                 break;
             case 2:
-                // strafe left
-                new Thread(new Tasker("drive,-0.5,0,3000")).start();
+                // turn left
+                new Thread(new Tasker("turn,0,500")).start();
                 state++;
                 break;
             case 4:
                 // drive forward
-                new Thread(new Tasker("drive,0,0.5,1000")).start();
+                new Thread(new Tasker("drive,0,0.5,3000")).start();
                 state++;
                 break;
             case 6:
+                // turn right
+                new Thread(new Tasker("turn,1,500")).start();
+                state++;
+                break;
+            case 8:
+                // drive forward
+                new Thread(new Tasker("drive,0,0.5,500")).start();
+                state++;
+                break;
+            case 10:
                 // autonomous is done as robot has parked
                 telemetryMsg = "autonomous completed in " + runtime.toString() + " seconds";
                 break;
