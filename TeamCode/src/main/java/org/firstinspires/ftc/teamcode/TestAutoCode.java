@@ -79,7 +79,7 @@ public class TestAutoCode extends OpMode {
                 break;
             case 18:
                 // turn right
-                new Thread(new Tasker("turn,1,500")).start();
+                new Thread(new Tasker("turn,1,501")).start();
                 state++;
                 break;
             case 20:
