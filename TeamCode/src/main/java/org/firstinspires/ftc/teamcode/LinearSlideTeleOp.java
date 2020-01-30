@@ -9,6 +9,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 @TeleOp(name="Linear Slide", group="Apex Robotics 3916")
 //@Disabled
 public class LinearSlideTeleOp extends OpMode {
@@ -73,10 +75,10 @@ public class LinearSlideTeleOp extends OpMode {
         }
         //stage 2 lift
         if (gamepad2.dpad_up) {
-            bot.aux_claw2(1);
+            bot.aux_claw2(-1); // reversed because servo is backwards see \/
             message = "STAGE 2 LIFT POWER 1";
         } else if (gamepad2.dpad_down) {
-            bot.aux_claw2(-1);
+            bot.aux_claw2(1); //reversed because servo is backwards see /\
             message = "STAGE 2 LIFT POWER -1";
         } else {
             bot.aux_claw2(0);
@@ -91,5 +93,18 @@ public class LinearSlideTeleOp extends OpMode {
             message = "CLAW LIFT POWER 0";
         }
         telemetry.addData("Claw", message);
+
+        // grabber of the build plate
+        if (gamepad2.left_bumper) {
+            bot.aux_claw4(-1);
+            telemetry.addData("Buildplate Grabber", "Power at -1");
+            telemetry.update();
+        } else if (gamepad2.right_bumper) {
+            bot.aux_claw4(1);
+            telemetry.addData("Buildplate Grabber", "Power at 1");
+            telemetry.update();
+        } else {
+            bot.aux_claw4(0);
+        }
     }
 }

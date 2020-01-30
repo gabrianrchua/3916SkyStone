@@ -50,36 +50,20 @@ public class TeleOpCascade extends OpMode {
         }
         else
         {
-            bot.aux_lift(0.0f);
+            bot.aux_lift(0);
         }
 
-        String message = "Wack nothing's happening...";
-        if (Math.abs(gamepad2.left_stick_y) > STICK_DEAD_ZONE) {
-            bot.aux_claw(gamepad2.left_stick_y);
-            message = "STAGE 1 LIFTING POWER " + gamepad2.left_stick_y;
+        // grabber of the build plate
+        if (gamepad2.left_bumper) {
+            bot.aux_claw4(-1);
+            telemetry.addData("Buildplate Grabber", "Power at -1");
+            telemetry.update();
+        } else if (gamepad2.right_bumper) {
+            bot.aux_claw4(1);
+            telemetry.addData("Buildplate Grabber", "Power at 1");
+            telemetry.update();
         } else {
-            bot.aux_claw(0);
+            bot.aux_claw4(0);
         }
-        //stage 2 lift
-        if (gamepad2.dpad_up) {
-            bot.aux_claw2(1);
-            message = "STAGE 2 LIFT POWER 1";
-        } else if (gamepad2.dpad_down) {
-            bot.aux_claw2(-1);
-            message = "STAGE 2 LIFT POWER -1";
-        } else {
-            bot.aux_claw2(0);
-        }
-        telemetry.addData("Lift", message);
-        //claw
-        if (Math.abs(gamepad2.right_stick_y) > STICK_DEAD_ZONE) {
-            bot.aux_claw3(gamepad2.right_stick_y);
-            message = "CLAW LIFT POWER " + gamepad2.right_stick_y;
-        } else {
-            bot.aux_claw3(0);
-            message = "CLAW LIFT POWER 0";
-        }
-        telemetry.addData("Claw", message);
-
     }
 }

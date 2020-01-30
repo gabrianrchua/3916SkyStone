@@ -49,20 +49,54 @@ public class TestAutoCode extends OpMode {
                 break;
             case 6:
                 // turn right
-                new Thread(new Tasker("drive,1,500")).start();
+                new Thread(new Tasker("turn,1,500")).start();
                 state++;
+                break;
             case 8:
-                // drive forward
-                //new Thread(new Tasker("drive,0,0.5,"))
-            case 10:
                 // open the claw
                 new Thread(new Tasker("open claw,1,500")).start(); // command, power, length
                 state++;
                 break;
+            case 10:
+                // drive forward
+                new Thread(new Tasker("drive,0,0.5,500")).start();
+                state++;
+                break;
             case 12:
                 // close the claw
-                new Thread(new Tasker("close claw,1,500"));
+                new Thread(new Tasker("close claw,1,500")).start();
                 state++;
+                break;
+            case 14:
+                //turn right
+                new Thread(new Tasker("turn,1,501")).start();
+                state++;
+                break;
+            case 16:
+                // drive forward
+                new Thread(new Tasker("drive,0,1,1000")).start();
+                state++;
+                break;
+            case 18:
+                // turn right
+                new Thread(new Tasker("turn,1,500")).start();
+                state++;
+                break;
+            case 20:
+                // drive forward
+                new Thread(new Tasker("drive,0,1,2600")).start();
+                state++;
+                break;
+            case 22:
+                // open the claw
+                new Thread(new Tasker("open claw,1,500")).start();
+                state++;
+                break;
+            case 24:
+                // drive backwards
+                new Thread(new Tasker("drive,0,-1,1000")).start();
+                state++;
+                break;
             default:
                 //pause for a bit
                 new Thread(new Tasker("pause,1000"));
@@ -122,17 +156,17 @@ public class TestAutoCode extends OpMode {
                 case "open claw":
                     // Open the claw
                     telemetryMsg = "Opening the claw";
-                    bot.aux_claw3(Long.parseLong(split[1]));
+                    bot.aux_claw3_direct(1);
                     pause(Long.parseLong(split[2]));
-                    bot.aux_claw3(0);
+                    //bot.aux_claw3(0);
                     telemetryMsg = "Claw is open";
                     break;
                 case "close claw":
                     // Close the claw
                     telemetryMsg = "Closing the claw";
-                    bot.aux_claw3(-Long.parseLong(split[1]));
+                    bot.aux_claw3_direct(0);
                     pause(Long.parseLong(split[2]));
-                    bot.aux_claw3(0);
+                    //bot.aux_claw3(0);
                     telemetryMsg = "Claw is closed";
                     break;
                 default:

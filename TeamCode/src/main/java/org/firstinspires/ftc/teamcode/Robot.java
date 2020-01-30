@@ -61,6 +61,7 @@ public class Robot {
     private CRServo aux_servo_1;
     private CRServo aux_servo_2;
     private Servo aux_servo_3;
+    private CRServo aux_servo_4;
     private double servo3pos;
 
     /*
@@ -159,6 +160,11 @@ public class Robot {
                     // no aux servo 3
                 }*/
                 aux_servo_3 = hw.get(Servo.class, "aux servo 3");
+                try {
+                    aux_servo_4 = hw.get(CRServo.class, "aux servo 4");
+                } catch (Exception ex) {
+                    // no aux servo 4
+                }
 
                 // reverse the right motors
                 mech_rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -253,6 +259,17 @@ public class Robot {
             servo3pos += power;
             servo3pos = Clamp(servo3pos, 0, 1);
             aux_servo_3.setPosition(servo3pos);
+        }
+    }
+    public void aux_claw3_direct(double position) {
+        if (aux_servo_3 != null) {
+            servo3pos = Clamp(position, 0, 1);
+            aux_servo_3.setPosition(servo3pos);
+        }
+    }
+    public void aux_claw4(double power) {
+        if (aux_servo_4 != null) {
+            aux_servo_4.setPower(power);
         }
     }
     private double Clamp(double i, double min, double max) {
