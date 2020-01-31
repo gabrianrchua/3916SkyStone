@@ -33,70 +33,95 @@ public class TestAutoCode extends OpMode {
         switch (state) {
             // even numbers for performing an action while odd values for state are used for waiting, seen in default case
             case 0:
-                // drive forward
-                new Thread(new Tasker("drive,0,1,1600")).start(); // command, X-Power, Y-Power, length
+                // drive backwards
+                new Thread(new Tasker("drive,0,-1,500")).start();
                 state++;
                 break;
             case 2:
                 // turn left
-                new Thread(new Tasker("turn,0,500")).start(); // command, direction, length
+                new Thread(new Tasker("turn,0,500")).start();
                 state++;
                 break;
             case 4:
                 // drive forward
-                new Thread(new Tasker("drive,0,0.5,1500")).start();
+                new Thread(new Tasker("drive,0,1,500")).start();
                 state++;
                 break;
             case 6:
-                // turn right
-                new Thread(new Tasker("turn,1,500")).start();
+                // bring down base grabby claw
+                new Thread(new Tasker("baseplate,500")).start(); // command, pause
                 state++;
                 break;
             case 8:
-                // open the claw
-                new Thread(new Tasker("open claw,1,500")).start(); // command, power, length
-                state++;
-                break;
-            case 10:
-                // drive forward
-                new Thread(new Tasker("drive,0,0.5,500")).start();
-                state++;
-                break;
-            case 12:
-                // close the claw
-                new Thread(new Tasker("close claw,1,500")).start();
-                state++;
-                break;
-            case 14:
-                //turn right
-                new Thread(new Tasker("turn,1,501")).start();
-                state++;
-                break;
-            case 16:
-                // drive forward
-                new Thread(new Tasker("drive,0,1,1000")).start();
-                state++;
-                break;
-            case 18:
-                // turn right
-                new Thread(new Tasker("turn,1,501")).start();
-                state++;
-                break;
-            case 20:
-                // drive forward
-                new Thread(new Tasker("drive,0,1,2600")).start();
-                state++;
-                break;
-            case 22:
-                // open the claw
-                new Thread(new Tasker("open claw,1,500")).start();
-                state++;
-                break;
-            case 24:
                 // drive backwards
-                new Thread(new Tasker("drive,0,-1,1000")).start();
+                new Thread(new Tasker("drive,0,-1,500")).start();
                 state++;
                 break;
+//            case 0:
+//                // drive forward
+//                new Thread(new Tasker("drive,0,1,1600")).start(); // command, X-Power, Y-Power, length
+//                state++;
+//                break;
+//            case 2:
+//                // turn left
+//                new Thread(new Tasker("turn,0,500")).start(); // command, direction, length
+//                state++;
+//                break;
+//            case 4:
+//                // drive forward
+//                new Thread(new Tasker("drive,0,0.5,1500")).start();
+//                state++;
+//                break;
+//            case 6:
+//                // turn right
+//                new Thread(new Tasker("turn,1,500")).start();
+//                state++;
+//                break;
+//            case 8:
+//                // open the claw
+//                new Thread(new Tasker("open claw,1,500")).start(); // command, power, length
+//                state++;
+//                break;
+//            case 10:
+//                // drive forward
+//                new Thread(new Tasker("drive,0,0.5,500")).start();
+//                state++;
+//                break;
+//            case 12:
+//                // close the claw
+//                new Thread(new Tasker("close claw,1,500")).start();
+//                state++;
+//                break;
+//            case 14:
+//                //turn right
+//                new Thread(new Tasker("turn,1,501")).start();
+//                state++;
+//                break;
+//            case 16:
+//                // drive forward
+//                new Thread(new Tasker("drive,0,1,1000")).start();
+//                state++;
+//                break;
+//            case 18:
+//                // turn right
+//                new Thread(new Tasker("turn,1,501")).start();
+//                state++;
+//                break;
+//            case 20:
+//                // drive forward
+//                new Thread(new Tasker("drive,0,1,2600")).start();
+//                state++;
+//                break;
+//            case 22:
+//                // open the claw
+//                new Thread(new Tasker("open claw,1,500")).start();
+//                state++;
+//                break;
+//            case 24:
+//                // drive backwards
+//                new Thread(new Tasker("drive,0,-1,1000")).start();
+//                state++;
+//                break;
             default:
                 //pause for a bit
                 new Thread(new Tasker("pause,1000"));
@@ -169,6 +194,10 @@ public class TestAutoCode extends OpMode {
                     //bot.aux_claw3(0);
                     telemetryMsg = "Claw is closed";
                     break;
+                case "baseplate":
+                    bot.aux_claw4(1);
+                    pause(Long.parseLong(split[1]));
+                    bot.aux_claw4(0);
                 default:
                     telemetryMsg = split[0] + " is either spelled wrong or hasn't been implemented yet";
                     break;

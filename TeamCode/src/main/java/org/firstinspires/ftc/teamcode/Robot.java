@@ -63,6 +63,7 @@ public class Robot {
     private Servo aux_servo_3;
     private CRServo aux_servo_4;
     private double servo3pos;
+    private double servo4pos;
 
     /*
      * any arbitrary constants required for certain calculations
@@ -272,6 +273,7 @@ public class Robot {
             aux_servo_4.setPower(power);
         }
     }
+
     private double Clamp(double i, double min, double max) {
         if (i < min) {
             return min;
