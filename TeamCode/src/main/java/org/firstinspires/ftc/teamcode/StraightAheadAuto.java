@@ -34,7 +34,7 @@ public class StraightAheadAuto extends OpMode {
             // even numbers for performing an action while odd values for state are used for waiting, seen in default case
             case 0:
                 // drive forward
-                new Thread(new Tasker("drive,0,0.5,1600")).start();
+                new Thread(new Tasker("drive,0,0.5,1800")).start();
                 state++;
                 break;
             case 2:

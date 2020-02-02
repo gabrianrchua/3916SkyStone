@@ -238,6 +238,22 @@ public class Robot {
         }
     }
 
+    public void mech_rotate(int direction, double turnPower) {
+        if (direction == 0) {
+            //clockwise
+            mech_leftBack.setPower(CLOCKWISE.leftBack * turnPower);
+            mech_leftFront.setPower(CLOCKWISE.leftFront * turnPower);
+            mech_rightBack.setPower(CLOCKWISE.rightBack * turnPower);
+            mech_rightFront.setPower(CLOCKWISE.rightFront * turnPower);
+        } else {
+            //counterclockwise
+            mech_leftBack.setPower(COUNTERCLOCKWISE.leftBack * turnPower);
+            mech_leftFront.setPower(COUNTERCLOCKWISE.leftFront * turnPower);
+            mech_rightBack.setPower(COUNTERCLOCKWISE.rightBack * turnPower);
+            mech_rightFront.setPower(COUNTERCLOCKWISE.rightFront * turnPower);
+        }
+    }
+
     public void aux_lift(double power) {
         if (aux_motor_1 != null) {
             aux_motor_1.setPower(power);

@@ -34,6 +34,14 @@ public class TeleOpCascade extends OpMode {
             bot.mech_rotate(1);
             telemetry.addData("Status", "Rotating Clockwise");
             telemetry.update();
+        } else if (Math.abs(gamepad1.right_trigger) > STICK_DEAD_ZONE) {
+            bot.mech_rotate(0, 0.8);
+            telemetry.addData("Status", "Rotating Counterclockwise Fast");
+            telemetry.update();
+        } else if (Math.abs(gamepad1.left_trigger) > STICK_DEAD_ZONE) {
+            bot.mech_rotate(1, 0.8);
+            telemetry.addData("Status", "Rotating Clockwise Fast");
+            telemetry.update();
         } else {
 //            if (Math.abs(gamepad1.left_stick_y) > STICK_DEAD_ZONE) {
 //                y = gamepad1.left_stick_y;
