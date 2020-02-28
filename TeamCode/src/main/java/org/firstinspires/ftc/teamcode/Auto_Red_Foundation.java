@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name = "Base Plate RED Autonomous", group = "Apex Robotics 3916")
-public class RedComplexAuto extends OpMode {
+public class Auto_Red_Foundation extends OpMode {
     private Robot bot = new Robot();
     private ElapsedTime runtime = new ElapsedTime();
     private String timeOfCompletion;
@@ -15,7 +15,7 @@ public class RedComplexAuto extends OpMode {
 
     @Override
     public void init() {
-        bot.init(hardwareMap, Robot.DriveType.Mecanum);
+        bot.init(hardwareMap, Robot.DriveType.Mechanum);
     }
 
     @Override

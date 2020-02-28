@@ -1,7 +1,7 @@
 /*
 Apex Robotics FTC Team 3916: Main TeleOp for SkyStone season (2019-2020)
 
-Uses a Mecanum-style drivetrain for movement.
+Uses a Mechanum-style drivetrain for movement.
  */
 
 package org.firstinspires.ftc.teamcode;
@@ -11,13 +11,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name="Cascade Boi", group="Apex Robotics 3916")
 //@Disabled
-public class TeleOpCascade extends OpMode {
+public class TeleOp_Cascade_Main extends OpMode {
 
     private Robot bot = new Robot();
 
     @Override
     public void init() {
-        bot.init(hardwareMap, Robot.DriveType.Mecanum);
+        bot.init(hardwareMap, Robot.DriveType.Mechanum);
     }
 
     @Override
