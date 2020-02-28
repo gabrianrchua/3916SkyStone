@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "Base Plate BLUE Autonomous", group = "Apex Robotics 3916")
-public class TestAutoCode extends OpMode {
+@Autonomous(name = "Base Plate RED Autonomous", group = "Apex Robotics 3916")
+public class RedComplexAuto extends OpMode {
     private Robot bot = new Robot();
     private ElapsedTime runtime = new ElapsedTime();
     private String timeOfCompletion;
@@ -15,7 +15,7 @@ public class TestAutoCode extends OpMode {
 
     @Override
     public void init() {
-        bot.init(hardwareMap, Robot.DriveType.Mechanum);
+        bot.init(hardwareMap, Robot.DriveType.Mecanum);
     }
 
     @Override
@@ -48,8 +48,8 @@ public class TestAutoCode extends OpMode {
                 state++;
                 break;
             case 6:
-                // turn left
-                new Thread(new Tasker("slow turn,0,0.35,2800")).start();
+                // turn right
+                new Thread(new Tasker("slow turn,1,0.35,2800")).start();
                 state++;
                 break;
             case 8:
@@ -59,7 +59,7 @@ public class TestAutoCode extends OpMode {
                 break;
             case 10:
                 // turn other way for a second
-                new Thread(new Tasker("slow turn,1,0.35,300")).start();
+                new Thread(new Tasker("slow turn,0,0.35,300")).start();
                 state++;
                 break;
             case 12:
@@ -126,7 +126,6 @@ public class TestAutoCode extends OpMode {
                     telemetryMsg = "turning with direction " + direction;
                     bot.mech_rotate(direction);
                     pause(Long.parseLong(split[2]));
-                    bot.stopDriving();
                     telemetryMsg = "done rotating";
                     break;
                 case "slow turn":
@@ -135,7 +134,6 @@ public class TestAutoCode extends OpMode {
                     telemetryMsg = "turning slowly with direction " + directionn;
                     bot.mech_rotate(directionn, Double.parseDouble(split[2]));
                     pause(Long.parseLong(split[3]));
-                    bot.stopDriving();
                     telemetryMsg = "done turning slowly";
                     break;
                 case "pause":
