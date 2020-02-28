@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class Robot {
     // defines what omni_drive types can be used
-    public enum DriveType {Tank, Omni, Mechanum}
+    public enum DriveType {Tank, Omni, Mecanum}
 
     // stores what kind of DriveType is currently being used
     public DriveType currentDriveType;
@@ -47,11 +47,12 @@ public class Robot {
     private DcMotor tank_leftDrive;
     private DcMotor tank_rightDrive;
 
-    // drive motors required for Mechanum drive
+    // drive motors required for Mecanum drive
     private DcMotor mech_leftFront;
     private DcMotor mech_leftBack;
     private DcMotor mech_rightFront;
     private DcMotor mech_rightBack;
+
 
     // cached HardwareMap in case needed for future
     private HardwareMap hw;
@@ -133,7 +134,7 @@ public class Robot {
                 for (DcMotor m : omni_rightDrive)
                     m.setPower(0);
                 break;
-            case Mechanum:
+            case Mecanum:
                 // add drive motors from hw
                 mech_leftBack = hw.get(DcMotor.class, "left back");
                 mech_leftFront = hw.get(DcMotor.class, "left front");
@@ -196,6 +197,13 @@ public class Robot {
      * @param stickY - stick value in the y direction
      */
     public MechPower mech_drive(double stickX, double stickY) {
+        //Set motors to use encoders when driving
+        mech_leftBack.setMode;
+
+        mech_leftFront.setPower(finalPwr.leftFront);
+        mech_rightBack.setPower(finalPwr.rightBack);
+        mech_rightFront.setPower(finalPwr.rightFront);
+
         double finalPowerMultiplier = Math.sqrt(Math.pow(stickX, 2) + Math.pow(stickY, 2));
         double interpolationValue = Math.atan(stickY / stickX) / (Math.PI / 2);
         MechPower finalPwr;
