@@ -4,8 +4,14 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "Straight Ahead Autonomous", group = "Apex Robotics 3916")
-public class StraightAheadAuto extends OpMode {
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+
+@Autonomous(name = "Test Autonomous", group = "Apex Robotics 3916")
+public class Auto_Test extends OpMode {
     private Robot bot = new Robot();
     private ElapsedTime runtime = new ElapsedTime();
     private String timeOfCompletion;
@@ -15,7 +21,7 @@ public class StraightAheadAuto extends OpMode {
 
     @Override
     public void init() {
-        bot.init(hardwareMap, Robot.DriveType.Mecanum);
+        bot.init(hardwareMap, Robot.DriveType.Mechanum);
     }
 
     @Override
@@ -32,12 +38,23 @@ public class StraightAheadAuto extends OpMode {
     public void loop() {
         switch (state) {
             // even numbers for performing an action while odd values for state are used for waiting, seen in default case
-            case 0:
+            case 0  :
                 // drive forward
-                new Thread(new Tasker("drive,0,0.5,1800")).start();
+                new Thread(new Tasker("drive,0,1,3000")).start();
                 state++;
+
                 break;
             case 2:
+                //turn for a bit
+                new Thread(new Tasker("turn,0,1000"));
+                state++;
+                break;
+            case 4:
+                //go forward but sideways
+                new Thread(new Tasker("drive,0,1,3000"));
+                state++;
+                break;
+            case 6:
                 // autonomous is done as robot has parked
                 telemetryMsg = "autonomous completed in " + runtime.toString() + " seconds";
                 break;

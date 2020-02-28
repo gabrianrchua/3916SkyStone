@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class Robot {
     // defines what omni_drive types can be used
-    public enum DriveType {Tank, Omni, Mecanum}
+    public enum DriveType {Tank, Omni, Mechanum}
 
     // stores what kind of DriveType is currently being used
     public DriveType currentDriveType;
@@ -47,12 +47,11 @@ public class Robot {
     private DcMotor tank_leftDrive;
     private DcMotor tank_rightDrive;
 
-    // drive motors required for Mecanum drive
+    // drive motors required for Mechanum drive
     private DcMotor mech_leftFront;
     private DcMotor mech_leftBack;
     private DcMotor mech_rightFront;
     private DcMotor mech_rightBack;
-
 
     // cached HardwareMap in case needed for future
     private HardwareMap hw;
@@ -134,7 +133,7 @@ public class Robot {
                 for (DcMotor m : omni_rightDrive)
                     m.setPower(0);
                 break;
-            case Mecanum:
+            case Mechanum:
                 // add drive motors from hw
                 mech_leftBack = hw.get(DcMotor.class, "left back");
                 mech_leftFront = hw.get(DcMotor.class, "left front");
@@ -196,49 +195,73 @@ public class Robot {
      * @param stickX - stick value in the x direction
      * @param stickY - stick value in the y direction
      */
+    //A method for mecanum drive
     public MechPower mech_drive(double stickX, double stickY) {
-        //Set motors to use encoders when driving
-        mech_leftBack.setMode;
 
-        mech_leftFront.setPower(finalPwr.leftFront);
-        mech_rightBack.setPower(finalPwr.rightBack);
-        mech_rightFront.setPower(finalPwr.rightFront);
+        //Set the motors to use the encoder
+        mech_leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mech_leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mech_rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mech_rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        //Multiply the stick's position to get interpolation
         double finalPowerMultiplier = Math.sqrt(Math.pow(stickX, 2) + Math.pow(stickY, 2));
+        //Set the amount of interpolation done, fancy trig
         double interpolationValue = Math.atan(stickY / stickX) / (Math.PI / 2);
+
+        //Calculate the final power w/interpolation for each stick position
         MechPower finalPwr;
         if (stickX >= 0 && stickY >= 0) {
-            //northeast
+            //Northeast stick position
             finalPwr = FORWARD.interpolate(RIGHT, interpolationValue, finalPowerMultiplier);
+
         } else if (stickX >= 0 && stickY < 0) {
-            //southeast
+            //Southeast stick position
             finalPwr = BACKWARD.interpolate(RIGHT, interpolationValue, finalPowerMultiplier);
+
         } else if (stickX < 0 && stickY >= 0) {
-            //northwest
+            //Northwest stick position
             finalPwr = FORWARD.interpolate(LEFT, interpolationValue, finalPowerMultiplier);
+
         } else if (stickX < 0 && stickY < 0) {
-            //southwest
+            //Southwest stick position
             finalPwr = BACKWARD.interpolate(LEFT, interpolationValue, finalPowerMultiplier);
+
         } else {
+            //If the stick is in the center, make the robot stop
             finalPwr = new MechPower(0,0,0,0);
+
         }
+
+        //After calculating the power for each motor, set it.
         mech_leftBack.setPower(finalPwr.leftBack);
         mech_leftFront.setPower(finalPwr.leftFront);
         mech_rightBack.setPower(finalPwr.rightBack);
         mech_rightFront.setPower(finalPwr.rightFront);
+
+        //Finally, return the final power to use in the MechPower class
         return finalPwr;
     }
 
     public void mech_rotate(int direction) {
+        //Set the motors to use the encoder
+        mech_leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mech_leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mech_rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mech_rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        //Set turning power (speed)
         double turnPower = 0.5;
+
+
         if (direction == 0) {
-            //clockwise
+            //Turn the robot clockwise
             mech_leftBack.setPower(CLOCKWISE.leftBack * turnPower);
             mech_leftFront.setPower(CLOCKWISE.leftFront * turnPower);
             mech_rightBack.setPower(CLOCKWISE.rightBack * turnPower);
             mech_rightFront.setPower(CLOCKWISE.rightFront * turnPower);
         } else {
-            //counterclockwise
+            //Turn the robot Counter-Clockwise
             mech_leftBack.setPower(COUNTERCLOCKWISE.leftBack * turnPower);
             mech_leftFront.setPower(COUNTERCLOCKWISE.leftFront * turnPower);
             mech_rightBack.setPower(COUNTERCLOCKWISE.rightBack * turnPower);
