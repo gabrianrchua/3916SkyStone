@@ -13,3 +13,8 @@
 
 // Include common definitions from above.
 apply from: '../build.common.gradle'
+
+dependencies {
+    implementation 'com.arcrobotics:ftclib:2.0.8'
+}
+

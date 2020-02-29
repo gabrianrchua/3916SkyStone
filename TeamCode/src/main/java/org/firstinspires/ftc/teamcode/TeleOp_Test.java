@@ -1,7 +1,7 @@
 /*
 Apex Robotics FTC Team 3916: Main TeleOp for SkyStone season (2019-2020)
 
-Uses a Mechanum-style drivetrain for movement.
+Uses a Mecanum-style drivetrain for movement.
  */
 
 package org.firstinspires.ftc.teamcode;
@@ -17,7 +17,7 @@ public class TeleOp_Test extends OpMode {
 
     @Override
     public void init() {
-        bot.init(hardwareMap, Robot.DriveType.Mechanum);
+        bot.init(hardwareMap, Robot.DriveType.Mecanum);
     }
 
     @Override
@@ -27,11 +27,11 @@ public class TeleOp_Test extends OpMode {
         double x = 0;
         double y = 0;
         if (gamepad1.left_bumper) {
-            bot.mech_rotate(0);
+            bot.mec_rotate(0);
             telemetry.addData("Status", "Rotating Counterclockwise");
             telemetry.update();
         } else if (gamepad1.right_bumper) {
-            bot.mech_rotate(1);
+            bot.mec_rotate(1);
             telemetry.addData("Status", "Rotating Clockwise");
             telemetry.update();
         } else {
@@ -41,7 +41,7 @@ public class TeleOp_Test extends OpMode {
             if (Math.abs(gamepad1.left_stick_x) > STICK_DEAD_ZONE) {
                 x = gamepad1.left_stick_x;
             }
-            MechPower pwr = bot.mech_drive(x, y);
+            MechPower pwr = bot.mec_drive(x, y);
             telemetry.addData("Status", "power: x:" + x + " y:" + y + " =pwr:" + pwr.toString());
             telemetry.update();
         }
