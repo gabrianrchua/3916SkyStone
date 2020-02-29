@@ -15,7 +15,7 @@ public class Auto_Blue_Foundation extends OpMode {
 
     @Override
     public void init() {
-        bot.init(hardwareMap, Robot.DriveType.Mechanum);
+        bot.init(hardwareMap, Robot.DriveType.Mecanum);
     }
 
     @Override
@@ -115,16 +115,16 @@ public class Auto_Blue_Foundation extends OpMode {
                     double x = Double.parseDouble(split[1]);
                     double y = Double.parseDouble(split[2]);
                     telemetryMsg = "driving at x=" + x + " y=" + y;
-                    bot.mech_drive(x, y);
+                    bot.mec_drive(x, y);
                     pause(Long.parseLong(split[3]));
                     bot.stopDriving();
                     telemetryMsg = "done driving";
                     break;
                 case "turn":
-                    // rotating the mech drive as in if a controller input
+                    // rotating the mec drive as in if a controller input
                     int direction = Integer.parseInt(split[1]);
                     telemetryMsg = "turning with direction " + direction;
-                    bot.mech_rotate(direction);
+                    bot.mec_rotate(direction);
                     pause(Long.parseLong(split[2]));
                     bot.stopDriving();
                     telemetryMsg = "done rotating";
@@ -133,7 +133,7 @@ public class Auto_Blue_Foundation extends OpMode {
                     // turn slowly than turn
                     int directionn = Integer.parseInt(split[1]);
                     telemetryMsg = "turning slowly with direction " + directionn;
-                    bot.mech_rotate(directionn, Double.parseDouble(split[2]));
+                    bot.mec_rotate(directionn, Double.parseDouble(split[2]));
                     pause(Long.parseLong(split[3]));
                     bot.stopDriving();
                     telemetryMsg = "done turning slowly";

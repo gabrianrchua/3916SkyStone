@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(name = "Test Autonomous", group = "Apex Robotics 3916")
+@Autonomous(name = "Auto_Test", group = "Apex Robotics 3916")
 public class Auto_Test extends OpMode {
     private Robot bot = new Robot();
     private ElapsedTime runtime = new ElapsedTime();
@@ -21,7 +21,7 @@ public class Auto_Test extends OpMode {
 
     @Override
     public void init() {
-        bot.init(hardwareMap, Robot.DriveType.Mechanum);
+        bot.init(hardwareMap, Robot.DriveType.Mecanum);
     }
 
     @Override
@@ -95,16 +95,16 @@ public class Auto_Test extends OpMode {
                     double x = Double.parseDouble(split[1]);
                     double y = Double.parseDouble(split[2]);
                     telemetryMsg = "driving at x=" + x + " y=" + y;
-                    bot.mech_drive(x, y);
+                    bot.mec_drive(x, y);
                     pause(Long.parseLong(split[3]));
                     bot.stopDriving();
                     telemetryMsg = "done driving";
                     break;
                 case "turn":
-                    // rotating the mech drive as in if a controller input
+                    // rotating the mec drive as in if a controller input
                     int direction = Integer.parseInt(split[1]);
                     telemetryMsg = "turning with direction " + direction;
-                    bot.mech_rotate(direction);
+                    bot.mec_rotate(direction);
                     pause(Long.parseLong(split[2]));
                     telemetryMsg = "done rotating";
                     break;
