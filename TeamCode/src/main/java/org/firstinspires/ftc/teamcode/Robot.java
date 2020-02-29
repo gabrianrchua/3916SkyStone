@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class Robot {
     // defines what omni_drive types can be used
-    public enum DriveType {Tank, Omni, Mechanum}
+    public enum DriveType {Tank, Omni, Mecanum}
 
     // stores what kind of DriveType is currently being used
     public DriveType currentDriveType;
@@ -47,11 +47,11 @@ public class Robot {
     private DcMotor tank_leftDrive;
     private DcMotor tank_rightDrive;
 
-    // drive motors required for Mechanum drive
-    private DcMotor mech_leftFront;
-    private DcMotor mech_leftBack;
-    private DcMotor mech_rightFront;
-    private DcMotor mech_rightBack;
+    // drive motors required for Mecanum drive
+    private DcMotor mec_leftFront;
+    private DcMotor mec_leftBack;
+    private DcMotor mec_rightFront;
+    private DcMotor mec_rightBack;
 
     // cached HardwareMap in case needed for future
     private HardwareMap hw;
@@ -71,18 +71,23 @@ public class Robot {
 
     // METERS; radius of the robot based on the circle traced by its wheels when turning
     private static final double BOT_RADIUS = .535; // not real, actual value tbd
-    // METERS; radius of one of the robot's wheels
-    private static final double WHEEL_RADIUS = .1; // not real, actual value tbd
+
+    ///////////////////////////////NEW CODE///////////////////////////////////////
+    // INCHES; radius of one of the robot's wheels
+    private static final double WHEEL_RADIUS = 2; //ACTUALLY USED FOR mec_move method!!
+
+    ///////////////////////////////NEW CODE DONE///////////////////////////////////////
+
     // RADIANS; angle created by the grabber system completely raised against the arm and an abstract horizontal line level with servo
     // NOTICE: this is specific to how the servos are mounted and may differ for other configurations
     public static final double GRABBER_LIFT_UP = 1; // not real, actual value tbd
     // RADIANS; angle created by grabber system equal to abstract horizontal line level with servo
     public static final double GRABBER_LIFT_DOWN = 0; // not real, actual value tbd
 
-    // amount of motor ticks per revolution for 40:1 REV hex motor. other motors may have different TPR
+    // amount of motor ticks per revolution for 40:1 REV hex motor. other motors may have different TPR !Used for Mecanum drive!
     private static final double TICKS_PER_REV = 2440;
 
-    // constants for the mechanum directions
+    // constants for the mecanum directions
     private static final MechPower FORWARD = new MechPower(1, 1, 1, 1);
     private static final MechPower BACKWARD = new MechPower(-1, -1, -1, -1);
     private static final MechPower LEFT = new MechPower(1, -1, -1, 1);
@@ -133,12 +138,12 @@ public class Robot {
                 for (DcMotor m : omni_rightDrive)
                     m.setPower(0);
                 break;
-            case Mechanum:
+            case Mecanum:
                 // add drive motors from hw
-                mech_leftBack = hw.get(DcMotor.class, "left back");
-                mech_leftFront = hw.get(DcMotor.class, "left front");
-                mech_rightBack = hw.get(DcMotor.class, "right back");
-                mech_rightFront = hw.get(DcMotor.class, "right front");
+                mec_leftBack = hw.get(DcMotor.class, "left back");
+                mec_leftFront = hw.get(DcMotor.class, "left front");
+                mec_rightBack = hw.get(DcMotor.class, "right back");
+                mec_rightFront = hw.get(DcMotor.class, "right front");
 
                 try {
                     aux_motor_1 = hw.get(DcMotor.class, "aux motor 1");
@@ -168,14 +173,14 @@ public class Robot {
                 }
 
                 // reverse the right motors
-                mech_rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
-                mech_rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+                mec_rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
+                mec_rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
 
                 // set motors to 0 power
-                mech_leftBack.setPower(0);
-                mech_leftFront.setPower(0);
-                mech_rightBack.setPower(0);
-                mech_rightFront.setPower(0);
+                mec_leftBack.setPower(0);
+                mec_leftFront.setPower(0);
+                mec_rightBack.setPower(0);
+                mec_rightFront.setPower(0);
                 break;
             default:
                 // an error occurred or an invalid drive type was specified
@@ -184,25 +189,25 @@ public class Robot {
         }
     }
     public void stopDriving() {
-        mech_leftBack.setPower(0);
-        mech_leftFront.setPower(0);
-        mech_rightBack.setPower(0);
-        mech_rightFront.setPower(0);
+        mec_leftBack.setPower(0);
+        mec_leftFront.setPower(0);
+        mec_rightBack.setPower(0);
+        mec_rightFront.setPower(0);
     }
 
     /**
-     * Move a mechanum style drive using the stick values
+     * Move a mecanum style drive using the stick values
      * @param stickX - stick value in the x direction
      * @param stickY - stick value in the y direction
      */
     //A method for mecanum drive
-    public MechPower mech_drive(double stickX, double stickY) {
+    public MechPower mec_drive(double stickX, double stickY) {
 
         //Set the motors to use the encoder
-        mech_leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        mech_leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        mech_rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        mech_rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mec_leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mec_leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mec_rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mec_rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //Multiply the stick's position to get interpolation
         double finalPowerMultiplier = Math.sqrt(Math.pow(stickX, 2) + Math.pow(stickY, 2));
@@ -234,21 +239,83 @@ public class Robot {
         }
 
         //After calculating the power for each motor, set it.
-        mech_leftBack.setPower(finalPwr.leftBack);
-        mech_leftFront.setPower(finalPwr.leftFront);
-        mech_rightBack.setPower(finalPwr.rightBack);
-        mech_rightFront.setPower(finalPwr.rightFront);
+        mec_leftBack.setPower(finalPwr.leftBack);
+        mec_leftFront.setPower(finalPwr.leftFront);
+        mec_rightBack.setPower(finalPwr.rightBack);
+        mec_rightFront.setPower(finalPwr.rightFront);
 
         //Finally, return the final power to use in the MechPower class
         return finalPwr;
     }
 
-    public void mech_rotate(int direction) {
+
+    ///////////////////////////////NEW CODE///////////////////////////////////////
+    public void mec_moveAround(String direction, double amount, double power){
+
+        //First, reset the encoders so that the current value is "zero"
+        mec_leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        mec_leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        mec_rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        mec_rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        //Now put the motors into RUN_TO_POSITION mode so that we can give it a distance to go
+        mec_leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        mec_leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        mec_rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        mec_rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //Also, the reason I'm not using a for loop to do this automatically is so that it's easier to understand.
+        //A for loop would be cleaner but that might confuse new people
+
+        //Now, make sure the wheels are going at the defined power that was requested.
+        mec_leftBack.setPower(power);
+        mec_leftFront.setPower(power);
+        mec_rightBack.setPower(power);
+        mec_rightFront.setPower(power);
+
+
+        //Now we need to decide which way to move based on what was entered
+        int targetPos = 0;
+        if (direction == "forward"){
+            //calculate how far to move in ticks based on the inches entered
+            targetPos = (int)((amount / (2 * Math.PI * WHEEL_RADIUS)) * TICKS_PER_REV);
+
+        } else if (direction == "backward"){
+            //literally the same except for a negative (to make it go the other way)
+            targetPos = -((int)((amount / (2 * Math.PI * WHEEL_RADIUS)) * TICKS_PER_REV));
+
+        } else if (direction =="rightTurn"){
+            //Going to need to do fancy math. However, it's certainly possible and will probably update soon.
+            //Going to use the amount variable and calculate how much the robot turns (in degrees).
+
+        } else if (direction =="leftTurn"){
+
+        }
+        //After the targetPos is calculated, set the wheels to go to that targetPos
+        mec_leftBack.setTargetPosition(targetPos);
+        mec_leftFront.setTargetPosition(targetPos);
+        mec_rightBack.setTargetPosition(targetPos);
+        mec_rightFront.setTargetPosition(targetPos);
+
+        while(mec_leftBack.isBusy() || mec_leftFront.isBusy() || mec_rightBack.isBusy() || mec_rightFront.isBusy()) {
+            //basically just do nothing until the wheels have stopped moving
+        }
+
+        //Finally, set all the motors to stop.
+        mec_leftBack.setPower(0);
+        mec_leftFront.setPower(0);
+        mec_rightBack.setPower(0);
+        mec_rightFront.setPower(0);
+    }
+    ///////////////////////////////NEW CODE DONE///////////////////////////////////////
+
+
+
+    public void mec_rotate(int direction) {
         //Set the motors to use the encoder
-        mech_leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        mech_leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        mech_rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        mech_rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mec_leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mec_leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mec_rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mec_rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //Set turning power (speed)
         double turnPower = 0.5;
@@ -256,32 +323,32 @@ public class Robot {
 
         if (direction == 0) {
             //Turn the robot clockwise
-            mech_leftBack.setPower(CLOCKWISE.leftBack * turnPower);
-            mech_leftFront.setPower(CLOCKWISE.leftFront * turnPower);
-            mech_rightBack.setPower(CLOCKWISE.rightBack * turnPower);
-            mech_rightFront.setPower(CLOCKWISE.rightFront * turnPower);
+            mec_leftBack.setPower(CLOCKWISE.leftBack * turnPower);
+            mec_leftFront.setPower(CLOCKWISE.leftFront * turnPower);
+            mec_rightBack.setPower(CLOCKWISE.rightBack * turnPower);
+            mec_rightFront.setPower(CLOCKWISE.rightFront * turnPower);
         } else {
             //Turn the robot Counter-Clockwise
-            mech_leftBack.setPower(COUNTERCLOCKWISE.leftBack * turnPower);
-            mech_leftFront.setPower(COUNTERCLOCKWISE.leftFront * turnPower);
-            mech_rightBack.setPower(COUNTERCLOCKWISE.rightBack * turnPower);
-            mech_rightFront.setPower(COUNTERCLOCKWISE.rightFront * turnPower);
+            mec_leftBack.setPower(COUNTERCLOCKWISE.leftBack * turnPower);
+            mec_leftFront.setPower(COUNTERCLOCKWISE.leftFront * turnPower);
+            mec_rightBack.setPower(COUNTERCLOCKWISE.rightBack * turnPower);
+            mec_rightFront.setPower(COUNTERCLOCKWISE.rightFront * turnPower);
         }
     }
 
-    public void mech_rotate(int direction, double turnPower) {
+    public void mec_rotate(int direction, double turnPower) {
         if (direction == 0) {
             //clockwise
-            mech_leftBack.setPower(CLOCKWISE.leftBack * turnPower);
-            mech_leftFront.setPower(CLOCKWISE.leftFront * turnPower);
-            mech_rightBack.setPower(CLOCKWISE.rightBack * turnPower);
-            mech_rightFront.setPower(CLOCKWISE.rightFront * turnPower);
+            mec_leftBack.setPower(CLOCKWISE.leftBack * turnPower);
+            mec_leftFront.setPower(CLOCKWISE.leftFront * turnPower);
+            mec_rightBack.setPower(CLOCKWISE.rightBack * turnPower);
+            mec_rightFront.setPower(CLOCKWISE.rightFront * turnPower);
         } else {
             //counterclockwise
-            mech_leftBack.setPower(COUNTERCLOCKWISE.leftBack * turnPower);
-            mech_leftFront.setPower(COUNTERCLOCKWISE.leftFront * turnPower);
-            mech_rightBack.setPower(COUNTERCLOCKWISE.rightBack * turnPower);
-            mech_rightFront.setPower(COUNTERCLOCKWISE.rightFront * turnPower);
+            mec_leftBack.setPower(COUNTERCLOCKWISE.leftBack * turnPower);
+            mec_leftFront.setPower(COUNTERCLOCKWISE.leftFront * turnPower);
+            mec_rightBack.setPower(COUNTERCLOCKWISE.rightBack * turnPower);
+            mec_rightFront.setPower(COUNTERCLOCKWISE.rightFront * turnPower);
         }
     }
 
