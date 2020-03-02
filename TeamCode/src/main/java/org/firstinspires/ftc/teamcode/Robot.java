@@ -75,6 +75,9 @@ public class Robot {
     ///////////////////////////////NEW CODE///////////////////////////////////////
     // INCHES; radius of one of the robot's wheels
     private static final double WHEEL_RADIUS = 2; //ACTUALLY USED FOR mec_move method!!
+    
+    //INCHES; same unit as wheel radius
+    private static final double LENGTH = 18;
 
     ///////////////////////////////NEW CODE DONE///////////////////////////////////////
 
@@ -278,23 +281,45 @@ public class Robot {
         if (direction == "forward"){
             //calculate how far to move in ticks based on the inches entered
             targetPos = (int)((amount / (2 * Math.PI * WHEEL_RADIUS)) * TICKS_PER_REV);
+            
+            //After the targetPos is calculated, set the wheels to go to that targetPos
+            mec_leftBack.setTargetPosition(targetPos);
+            mec_leftFront.setTargetPosition(targetPos);
+            mec_rightBack.setTargetPosition(targetPos);
+            mec_rightFront.setTargetPosition(targetPos);
 
         } else if (direction == "backward"){
             //literally the same except for a negative (to make it go the other way)
             targetPos = -((int)((amount / (2 * Math.PI * WHEEL_RADIUS)) * TICKS_PER_REV));
+            
+            //After the targetPos is calculated, set the wheels to go to that targetPos
+            mec_leftBack.setTargetPosition(targetPos);
+            mec_leftFront.setTargetPosition(targetPos);
+            mec_rightBack.setTargetPosition(targetPos);
+            mec_rightFront.setTargetPosition(targetPos);
 
         } else if (direction =="rightTurn"){
             //Going to need to do fancy math. However, it's certainly possible and will probably update soon.
             //Going to use the amount variable and calculate how much the robot turns (in degrees).
-
+            targetPos = ((LENGTH * amount)*TICKS_PER_REV)/(720*WHEEL_RADIUS);
+            
+            //After the targetPos is calculated, set the wheels to go to that targetPos
+            mec_leftBack.setTargetPosition(targetPos);
+            mec_leftFront.setTargetPosition(targetPos);
+            mec_rightBack.setTargetPosition(-targetPos);
+            mec_rightFront.setTargetPosition(-targetPos);
         } else if (direction =="leftTurn"){
-
+            //Going to use the amount variable and calculate how much the robot turns (in degrees).
+            targetPos = ((LENGTH * amount)*TICKS_PER_REV)/(720*WHEEL_RADIUS);
+            
+            //After the targetPos is calculated, set the wheels to go to that targetPos
+            mec_leftBack.setTargetPosition(-targetPos);
+            mec_leftFront.setTargetPosition(-targetPos);
+            mec_rightBack.setTargetPosition(targetPos);
+            mec_rightFront.setTargetPosition(targetPos);
         }
-        //After the targetPos is calculated, set the wheels to go to that targetPos
-        mec_leftBack.setTargetPosition(targetPos);
-        mec_leftFront.setTargetPosition(targetPos);
-        mec_rightBack.setTargetPosition(targetPos);
-        mec_rightFront.setTargetPosition(targetPos);
+        
+        
 
         while(mec_leftBack.isBusy() || mec_leftFront.isBusy() || mec_rightBack.isBusy() || mec_rightFront.isBusy()) {
             //basically just do nothing until the wheels have stopped moving
