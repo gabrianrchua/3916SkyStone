@@ -10,6 +10,11 @@ public class Auto_None_Straight extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private String timeOfCompletion;
 
+    //This (codeState) variable basically holds whether or not the code has run.
+    // If it has (and there are no other states to run), then don't do anything.
+    private int codeState = 0;
+
+    //This (state) variable is for the old switch statement code but idk
     private int state = 0;
     private String telemetryMsg;
 
@@ -30,25 +35,30 @@ public class Auto_None_Straight extends OpMode {
 
     @Override
     public void loop() {
-        switch (state) {
-            // even numbers for performing an action while odd values for state are used for waiting, seen in default case
-            case 0:
-                // drive forward
-                new Thread(new Tasker("drive,0,0.5,1800")).start();
-                state++;
-                break;
-            case 2:
-                // autonomous is done as robot has parked
-                telemetryMsg = "autonomous completed in " + runtime.toString() + " seconds";
-                break;
-            default:
-                //pause for a bit
-                new Thread(new Tasker("pause,1000"));
-                //state++;
-                break;
+        if (codeState == 0){
+            //Enter code here
+
+            //pause for a bit
+            new Thread(new Tasker("pause,1000"));
+
+            // drive forward
+            new Thread(new Tasker("drive,0,0.5,1800")).start();
+
+            //pause for a bit
+            new Thread(new Tasker("pause,1000"));
+
+            // autonomous is done as robot has parked
+            telemetryMsg = "Autonomous completed in " + runtime.toString() + " seconds";
+
+            codeState = 1;
+        }
+        else {
+            //If the code is done, just wait I guess
+            new Thread(new Tasker("pause,1000"));
         }
 
-        telemetry.addData("runtime", runtime.toString() + " seconds");
+
+        telemetry.addData("Runtime:", runtime.toString() + " seconds");
 
         if (telemetryMsg != null) {
             telemetry.addData("*", "-----------");

@@ -253,7 +253,9 @@ public class Robot {
 
 
     ///////////////////////////////NEW CODE///////////////////////////////////////
-    public void mec_moveAround(String direction, double amount, double power){
+    public void mec_moveAround (String direction, double amount, double power){
+        //USAGE: Enter a direction (forward, backward, rightTurn,leftTurn), an amount to move in inches (or degrees if turning), and a power.
+
 
         //First, reset the encoders so that the current value is "zero"
         mec_leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -299,9 +301,9 @@ public class Robot {
             mec_rightFront.setTargetPosition(targetPos);
 
         } else if (direction =="rightTurn"){
-            //Going to need to do fancy math. However, it's certainly possible and will probably update soon.
+
             //Going to use the amount variable and calculate how much the robot turns (in degrees).
-            targetPos = ((LENGTH * amount)*TICKS_PER_REV)/(720*WHEEL_RADIUS);
+            targetPos = (int)(((LENGTH * amount)*TICKS_PER_REV)/(720*WHEEL_RADIUS));
             
             //After the targetPos is calculated, set the wheels to go to that targetPos
             mec_leftBack.setTargetPosition(targetPos);
@@ -310,7 +312,7 @@ public class Robot {
             mec_rightFront.setTargetPosition(-targetPos);
         } else if (direction =="leftTurn"){
             //Going to use the amount variable and calculate how much the robot turns (in degrees).
-            targetPos = ((LENGTH * amount)*TICKS_PER_REV)/(720*WHEEL_RADIUS);
+            targetPos = (int)(((LENGTH * amount)*TICKS_PER_REV)/(720*WHEEL_RADIUS));
             
             //After the targetPos is calculated, set the wheels to go to that targetPos
             mec_leftBack.setTargetPosition(-targetPos);
