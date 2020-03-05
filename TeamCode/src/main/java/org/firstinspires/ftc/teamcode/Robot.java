@@ -2,6 +2,13 @@
 Apex Robotics FTC Team 3916: Robot Class
 Created with Android Studio v3.3.1, Gradle v4.10.1
 Template created by Gabrian Chua (2019)
+Apex Robotics Credits:
+Will Simpson (1880s - 2019)
+Gabrian Chua (2017 - present)
+John Huang (no idea - present)
+Aman Anas (2018 - present)
+Many others
+
 
 This Robot class is the main class that defines a Robot.
 Most classes will create a Robot object from this class for behavior.
@@ -27,6 +34,8 @@ import java.util.List;
  *
  * @author will simpson of apex robotics 3916
  * @since December 2018
+ *
+ *
  */
 public class Robot {
     // defines what omni_drive types can be used
