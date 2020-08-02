@@ -4,8 +4,14 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "Blue Left Autonomous", group = "Apex Robotics 3916")
-public class BlueLeftAuto extends OpMode {
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+
+@Autonomous(name = "Test Autonomous", group = "Apex Robotics 3916")
+public class Autonomous_Testing extends OpMode {
     private Robot bot = new Robot();
     private ElapsedTime runtime = new ElapsedTime();
     private String timeOfCompletion;
@@ -34,31 +40,21 @@ public class BlueLeftAuto extends OpMode {
             // even numbers for performing an action while odd values for state are used for waiting, seen in default case
             case 0:
                 // drive forward
-                new Thread(new Tasker("drive,0,0.5,1500")).start();
+                new Thread(new Tasker("drive,0,1,3000")).start();
                 state++;
 
                 break;
             case 2:
-                // turn left
-                new Thread(new Tasker("turn,0,500")).start();
+                //turn for a bit
+                new Thread(new Tasker("turn,0,1000"));
                 state++;
                 break;
             case 4:
-                // drive forward
-                new Thread(new Tasker("drive,0,0.5,3000")).start();
+                //go forward but sideways
+                new Thread(new Tasker("drive,0,1,3000"));
                 state++;
                 break;
             case 6:
-                // turn right
-                new Thread(new Tasker("turn,1,500")).start();
-                state++;
-                break;
-            case 8:
-                // drive forward
-                new Thread(new Tasker("drive,0,0.5,500")).start();
-                state++;
-                break;
-            case 10:
                 // autonomous is done as robot has parked
                 telemetryMsg = "autonomous completed in " + runtime.toString() + " seconds";
                 break;

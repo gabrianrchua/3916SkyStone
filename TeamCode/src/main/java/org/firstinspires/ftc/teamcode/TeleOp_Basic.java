@@ -9,9 +9,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="Main TeleOp", group="Apex Robotics 3916")
+@TeleOp(name="Basic TeleOp", group="Apex Robotics 3916")
 //@Disabled
-public class MainTeleOp extends OpMode {
+public class TeleOp_Basic extends OpMode {
 
     private Robot bot = new Robot();
 

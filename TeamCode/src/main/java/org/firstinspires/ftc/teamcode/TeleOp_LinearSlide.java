@@ -9,9 +9,11 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="Cascade Boi", group="Apex Robotics 3916")
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
+@TeleOp(name="Linear Slide TeleOp", group="Apex Robotics 3916")
 //@Disabled
-public class TeleOpCascade extends OpMode {
+public class TeleOp_LinearSlide extends OpMode {
 
     private Robot bot = new Robot();
 
@@ -26,6 +28,7 @@ public class TeleOpCascade extends OpMode {
 
         double x = 0;
         double y = 0;
+        //John Switched the values of bot.mech_rotate(int)
         if (gamepad1.left_bumper) {
             bot.mech_rotate(0);
             telemetry.addData("Status", "Rotating Counterclockwise");
@@ -34,24 +37,7 @@ public class TeleOpCascade extends OpMode {
             bot.mech_rotate(1);
             telemetry.addData("Status", "Rotating Clockwise");
             telemetry.update();
-        } else if (Math.abs(gamepad1.right_trigger) > STICK_DEAD_ZONE) {
-            bot.mech_rotate(0, 0.8);
-            telemetry.addData("Status", "Rotating Counterclockwise Fast");
-            telemetry.update();
-        } else if (Math.abs(gamepad1.left_trigger) > STICK_DEAD_ZONE) {
-            bot.mech_rotate(1, 0.8);
-            telemetry.addData("Status", "Rotating Clockwise Fast");
-            telemetry.update();
         } else {
-//            if (Math.abs(gamepad1.left_stick_y) > STICK_DEAD_ZONE) {
-//                y = gamepad1.left_stick_y;
-//            }
-//            if (Math.abs(gamepad1.left_stick_x) > STICK_DEAD_ZONE) {
-//                x = gamepad1.left_stick_x;
-//            }
-//            MechPower pwr = bot.mech_drive(x, y);
-//            telemetry.addData("Status", "power: x:" + x + " y:" + y + " =pwr:" + pwr.toString());
-//            telemetry.update();
             double fx = gamepad1.left_stick_x;
             double fy = gamepad1.left_stick_y;
             double sx = gamepad1.right_stick_x;
@@ -79,16 +65,26 @@ public class TeleOpCascade extends OpMode {
             telemetry.addData("Drive Stat", teleStr + pwr.toString());
             telemetry.update();
         }
+        String message = "Wack nothing's happening...";
+        //stage 1 lift
         if (Math.abs(gamepad2.left_stick_y) > STICK_DEAD_ZONE) {
-            bot.aux_lift(-gamepad2.left_stick_y);
+            bot.aux_claw(gamepad2.left_stick_y);
+            message = "STAGE 1 LIFTING POWER " + gamepad2.left_stick_y;
+        } else {
+            bot.aux_claw(0);
         }
-        else
-        {
-            bot.aux_lift(0);
+        //stage 2 lift
+        if (gamepad2.dpad_up) {
+            bot.aux_claw2(-1); // reversed because servo is backwards see \/
+            message = "STAGE 2 LIFT POWER 1";
+        } else if (gamepad2.dpad_down) {
+            bot.aux_claw2(1); //reversed because servo is backwards see /\
+            message = "STAGE 2 LIFT POWER -1";
+        } else {
+            bot.aux_claw2(0);
         }
-
+        telemetry.addData("Lift", message);
         //claw
-        String message = "Nothing is happening";
         if (Math.abs(gamepad2.right_stick_y) > STICK_DEAD_ZONE) {
             bot.aux_claw3(gamepad2.right_stick_y);
             message = "CLAW LIFT POWER " + gamepad2.right_stick_y;
